@@ -1,10 +1,60 @@
 import "./App.css";
+import { useState, useEffect } from "react";
+import CardGrid from "./components/CardGrid";
+
+const cardImages = [
+  { src: "/img/helmet-1.png" },
+  { src: "/img/potion-1.png" },
+  { src: "/img/ring-1.png" },
+  { src: "/img/scroll-1.png" },
+  { src: "/img/shield-1.png" },
+  { src: "/img/sword-1.png" },
+];
 
 function App() {
+  const [cards, setCards] = useState([]);
+  const [turns, setTurns] = useState(0);
+  const [choiceOne, setChoiceOne] = useState(null);
+  const [choiceTwo, setChoiceTwo] = useState(null);
+
+  const shuffleCards = () => {
+    const shuffledCards = [...cardImages, ...cardImages]
+      .sort(() => Math.random() - 0.5)
+      .map((card) => ({ ...card, id: Math.random() }));
+    setCards(shuffledCards);
+    setTurns(0);
+  };
+
+  // check and update choice
+  const handleChoice = (card) => {
+    choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
+  };
+
+  // reset Turn
+  const resetTurns = () => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+
+    setTurns((prevTurn) => prevTurn + 1);
+  };
+
+  useEffect(() => {
+    if (choiceOne && choiceTwo) {
+      if (choiceOne.src === choiceTwo.src) {
+        console.log(`Hurrah! That's a match`);
+      } else {
+        console.log(`Nah! That's not a match`);
+      }
+      resetTurns();
+    }
+  }, [choiceOne, choiceTwo]);
   return (
     <div className='App'>
       <h1>Magic Match</h1>
-      <button>New Game</button>
+      <button onClick={shuffleCards}>New Game</button>
+
+      <CardGrid cards={cards} handleChoice={handleChoice} />
+      <p>{turns}</p>
     </div>
   );
 }
