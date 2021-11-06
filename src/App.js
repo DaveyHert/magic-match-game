@@ -3,12 +3,12 @@ import { useState, useEffect } from "react";
 import CardGrid from "./components/CardGrid";
 
 const cardImages = [
-  { src: "/img/helmet-1.png" },
-  { src: "/img/potion-1.png" },
-  { src: "/img/ring-1.png" },
-  { src: "/img/scroll-1.png" },
-  { src: "/img/shield-1.png" },
-  { src: "/img/sword-1.png" },
+  { src: "/img/helmet-1.png", matched: false },
+  { src: "/img/potion-1.png", matched: false },
+  { src: "/img/ring-1.png", matched: false },
+  { src: "/img/scroll-1.png", matched: false },
+  { src: "/img/shield-1.png", matched: false },
+  { src: "/img/sword-1.png", matched: false },
 ];
 
 function App() {
@@ -41,10 +41,20 @@ function App() {
   useEffect(() => {
     if (choiceOne && choiceTwo) {
       if (choiceOne.src === choiceTwo.src) {
-        console.log(`Hurrah! That's a match`);
+        setCards((prevCards) =>
+          prevCards.map((card) => {
+            if (card.src === choiceOne.src) {
+              card.matched = true;
+              return card;
+            } else {
+              return card;
+            }
+          })
+        );
       } else {
         console.log(`Nah! That's not a match`);
       }
+      console.dir(cards);
       resetTurns();
     }
   }, [choiceOne, choiceTwo]);
