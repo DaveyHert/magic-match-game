@@ -41,23 +41,25 @@ function App() {
   useEffect(() => {
     if (choiceOne && choiceTwo) {
       if (choiceOne.src === choiceTwo.src) {
-        setCards((prevCards) =>
-          prevCards.map((card) => {
+        setCards((prevCards) => {
+          return prevCards.map((card) => {
             if (card.src === choiceOne.src) {
-              card.matched = true;
-              return card;
+              return { ...card, matched: true };
             } else {
               return card;
             }
-          })
-        );
+          });
+        });
       } else {
         console.log(`Nah! That's not a match`);
       }
-      console.dir(cards);
+
       resetTurns();
     }
   }, [choiceOne, choiceTwo]);
+
+  console.dir(cards);
+
   return (
     <div className='App'>
       <h1>Magic Match</h1>
