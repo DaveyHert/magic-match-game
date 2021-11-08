@@ -64,6 +64,7 @@ function App() {
     }
   }, [choiceOne, choiceTwo]);
 
+  // runs once on mount
   useEffect(() => {
     shuffleCards();
   }, []);
