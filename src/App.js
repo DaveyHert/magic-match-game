@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import CardGrid from "./components/CardGrid";
+import SingleCard from "./components/SingleCard";
 
 const cardImages = [
   { src: "/img/helmet-1.png", matched: false },
@@ -53,7 +53,7 @@ function App() {
         console.log(`Nah! That's not a match`);
       }
 
-      resetTurns();
+      setTimeout(() => resetTurns(), 2000);
     }
   }, [choiceOne, choiceTwo]);
 
@@ -64,7 +64,16 @@ function App() {
       <h1>Magic Match</h1>
       <button onClick={shuffleCards}>New Game</button>
 
-      <CardGrid cards={cards} handleChoice={handleChoice} />
+      <div className='card-grid'>
+        {cards.map((card) => (
+          <SingleCard
+            card={card}
+            key={card.id}
+            handleChoice={handleChoice}
+            flipped={card === choiceOne || card === choiceTwo || card.matched}
+          />
+        ))}
+      </div>
       <p>{turns}</p>
     </div>
   );
